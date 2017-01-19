@@ -385,6 +385,9 @@ case "${host}" in
 	signal_dir=
 	sys_dir=netware
 	;;
+  *-*-hipperos*)
+    sys_dir=hipperos
+    ;;
   *-*-phoenix*)
 	sys_dir=phoenix
 	posix_dir=posix
@@ -583,6 +586,10 @@ case "${host}" in
 	newlib_cflags="${newlib_cflags} -DHAVE_OPENDIR -DHAVE_RENAME -DSIGNAL_PROVIDED -D_COMPILING_NEWLIB -DHAVE_BLKSIZE -DHAVE_FCNTL -DMALLOC_PROVIDED"
 	syscall_dir=syscalls
 	;;
+  *-*-hipperos*)
+    newlib_cflags="${newlib_cflags} -DREENTRANT_SYSCALLS_PROVIDED"
+    syscall_dir=syscalls
+    ;;
   *-*-phoenix*)
 	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES -D_COMPILING_NEWLIB -DHAVE_BLKSIZE -DHAVE_NANOSLEEP"
 	default_newlib_io_long_long="yes"
