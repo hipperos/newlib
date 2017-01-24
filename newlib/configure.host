@@ -381,13 +381,13 @@ case "${host}" in
 	stdio64_dir=stdio64
 	xdr_dir=xdr
 	;;
+  *-*-hipperos*)
+    sys_dir=hipperos
+    ;;
   *-*-netware*)
 	signal_dir=
 	sys_dir=netware
 	;;
-  *-*-hipperos*)
-    sys_dir=hipperos
-    ;;
   *-*-phoenix*)
 	sys_dir=phoenix
 	posix_dir=posix

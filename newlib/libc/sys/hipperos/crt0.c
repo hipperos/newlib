@@ -1,5 +1,3 @@
-#include <fcntl.h>
-
 extern int main();
 
 void _start()
