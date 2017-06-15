@@ -1,7 +1,6 @@
-extern int main();
+/* Having a crt0 file is mandatory for some reason */
 
-void _start()
+void _dummy()
 {
-    const int exitCode = main();
-    exit(exitCode);
+    /* Empty function. */
 }

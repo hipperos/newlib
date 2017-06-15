@@ -4,16 +4,12 @@ AM_CCASFLAGS = $(INCLUDES)
 
 noinst_LIBRARIES = lib.a
 
-if MAY_SUPPLY_SYSCALLS
-extra_objs = syscalls.o # add more object files here if you split up
-else                    # syscalls.c into multiple files in the previous step
-extra_objs =
-endif
+hipperos_objs = getreent.o
 
-lib_a_SOURCES =
-lib_a_LIBADD = $(extra_objs)
-EXTRA_lib_a_SOURCES = syscalls.c crt0.c # add more source files here if you split up
-lib_a_DEPENDENCIES = $(extra_objs)      # syscalls.c into multiple files
+lib_a_SOURCES = crt0.c getreent.c
+lib_a_LIBADD = $(hipperos_objs)
+
+lib_a_DEPENDENCIES = $(hipperos_objs)
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 lib_a_CFLAGS = $(AM_CFLAGS)
 

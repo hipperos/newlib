@@ -233,6 +233,10 @@
 #include <cygwin/config.h>
 #endif
 
+#if defined(__hipperos__)
+#define __DYNAMIC_REENT__
+#endif /* defined(__hipperos) */
+
 #if defined(__rtems__)
 #define __FILENAME_MAX__ 255
 #define _READ_WRITE_RETURN_TYPE _ssize_t
