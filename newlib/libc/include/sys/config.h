@@ -36,7 +36,7 @@
 
 #if (defined(__CR16__) || defined(__CR16C__) ||defined(__CR16CP__))
 #ifndef __INT32__
-#define __SMALL_BITFIELDS
+#define __SMALL_BITFIELDS      
 #undef INT_MAX
 #undef UINT_MAX
 #define INT_MAX 32767
