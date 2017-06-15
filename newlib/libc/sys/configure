@@ -792,6 +792,7 @@ decstation
 epiphany
 h8300hms
 h8500hms
+hipperos
 linux
 m88kbug
 mmixware
@@ -11456,7 +11457,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11459 "configure"
+#line 11460 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11562,7 +11563,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11565 "configure"
+#line 11566 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11818,6 +11819,8 @@ subdirs="$subdirs a29khif"
 	h8300hms) subdirs="$subdirs h8300hms"
  ;;
 	h8500hms) subdirs="$subdirs h8500hms"
+ ;;
+	hipperos) subdirs="$subdirs hipperos"
  ;;
 	linux) subdirs="$subdirs linux"
  ;;
