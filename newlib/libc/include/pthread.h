@@ -41,7 +41,7 @@ struct _pthread_cleanup_context {
 /* Register Fork Handlers */
 int	_EXFUN(pthread_atfork,(void (*prepare)(void), void (*parent)(void),
                    void (*child)(void)));
-          
+
 /* Mutex Initialization Attributes, P1003.1c/Draft 10, p. 81 */
 
 int	_EXFUN(pthread_mutexattr_init, (pthread_mutexattr_t *__attr));
@@ -69,7 +69,7 @@ int	_EXFUN(pthread_mutex_init,
 int	_EXFUN(pthread_mutex_destroy, (pthread_mutex_t *__mutex));
 
 /* This is used to statically initialize a pthread_mutex_t. Example:
-  
+
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
  */
 
@@ -90,7 +90,7 @@ int	_EXFUN(pthread_mutex_timedlock,
 #endif /* _POSIX_TIMEOUTS */
 
 /* Condition Variable Initialization Attributes, P1003.1c/Draft 10, p. 96 */
- 
+
 int	_EXFUN(pthread_condattr_init, (pthread_condattr_t *__attr));
 int	_EXFUN(pthread_condattr_destroy, (pthread_condattr_t *__attr));
 
@@ -104,34 +104,34 @@ int	_EXFUN(pthread_condattr_getpshared,
 		(_CONST pthread_condattr_t *__attr, int *__pshared));
 int	_EXFUN(pthread_condattr_setpshared,
 		(pthread_condattr_t *__attr, int __pshared));
- 
+
 /* Initializing and Destroying a Condition Variable, P1003.1c/Draft 10, p. 87 */
- 
+
 int	_EXFUN(pthread_cond_init,
 	(pthread_cond_t *__cond, _CONST pthread_condattr_t *__attr));
 int	_EXFUN(pthread_cond_destroy, (pthread_cond_t *__mutex));
- 
+
 /* This is used to statically initialize a pthread_cond_t. Example:
-  
+
     pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
  */
- 
+
 #define PTHREAD_COND_INITIALIZER _PTHREAD_COND_INITIALIZER
- 
+
 /* Broadcasting and Signaling a Condition, P1003.1c/Draft 10, p. 101 */
- 
+
 int	_EXFUN(pthread_cond_signal, (pthread_cond_t *__cond));
 int	_EXFUN(pthread_cond_broadcast, (pthread_cond_t *__cond));
- 
+
 /* Waiting on a Condition, P1003.1c/Draft 10, p. 105 */
- 
+
 int	_EXFUN(pthread_cond_wait,
 	(pthread_cond_t *__cond, pthread_mutex_t *__mutex));
- 
+
 int	_EXFUN(pthread_cond_timedwait,
 		(pthread_cond_t *__cond, pthread_mutex_t *__mutex,
 		_CONST struct timespec *__abstime));
- 
+
 #if defined(_POSIX_THREAD_PRIORITY_SCHEDULING)
 
 /* Thread Creation Scheduling Attributes, P1003.1c/Draft 10, p. 120 */
@@ -173,7 +173,7 @@ int	_EXFUN(pthread_setschedprio, (pthread_t thread, int prio));
 #if defined(_POSIX_THREAD_PRIO_INHERIT) || defined(_POSIX_THREAD_PRIO_PROTECT)
 
 /* Mutex Initialization Scheduling Attributes, P1003.1c/Draft 10, p. 128 */
- 
+
 int	_EXFUN(pthread_mutexattr_setprotocol,
 	(pthread_mutexattr_t *__attr, int __protocol));
 int	_EXFUN(pthread_mutexattr_getprotocol,
@@ -221,14 +221,14 @@ int	_EXFUN(pthread_attr_getguardsize,
 int	_EXFUN(pthread_attr_setguardsize,
 	(pthread_attr_t *__attr, size_t __guardsize));
 
-/* POSIX thread APIs beyond the POSIX standard but provided 
+/* POSIX thread APIs beyond the POSIX standard but provided
  * in GNU/Linux. They may be provided by other OSes for
  * compatibility.
  */
 #if __GNU_VISIBLE
-#if defined(__rtems__) 
+#if defined(__rtems__) || defined(__hipperos__)
 int	_EXFUN(pthread_attr_setaffinity_np,
-	(pthread_attr_t *__attr, size_t __cpusetsize, 
+	(pthread_attr_t *__attr, size_t __cpusetsize,
 	const cpu_set_t *__cpuset));
 int 	_EXFUN(pthread_attr_getaffinity_np,
 	(const pthread_attr_t *__attr, size_t __cpusetsize,
@@ -241,7 +241,7 @@ int	_EXFUN(pthread_getaffinity_np,
 
 int	_EXFUN(pthread_getattr_np,
 	(pthread_t __id, pthread_attr_t *__attr));
-#endif /* defined(__rtems__) */
+#endif /* defined(__rtems__) || defined(__hipperos__) */
 #endif /* __GNU_VISIBLE */
 
 /* Thread Creation, P1003.1c/Draft 10, p. 144 */
@@ -285,13 +285,13 @@ void	_EXFUN(pthread_yield, (void));
 /* Dynamic Package Initialization */
 
 /* This is used to statically initialize a pthread_once_t. Example:
-  
+
     pthread_once_t once = PTHREAD_ONCE_INIT;
-  
+
     NOTE:  This is named inconsistently -- it should be INITIALIZER.  */
- 
+
 #define PTHREAD_ONCE_INIT _PTHREAD_ONCE_INIT
- 
+
 int	_EXFUN(pthread_once,
 	(pthread_once_t *__once_control, void (*__init_routine)(void)));
 
@@ -369,12 +369,12 @@ void	_EXFUN(_pthread_cleanup_pop_restore,
 #endif /* __GNU_VISIBLE */
 
 #if defined(_POSIX_THREAD_CPUTIME)
- 
+
 /* Accessing a Thread CPU-time Clock, P1003.4b/D8, p. 58 */
- 
+
 int	_EXFUN(pthread_getcpuclockid,
 	(pthread_t __pthread_id, clockid_t *__clock_id));
- 
+
 #endif /* defined(_POSIX_THREAD_CPUTIME) */
 
 
@@ -413,7 +413,7 @@ int	_EXFUN(pthread_spin_unlock, (pthread_spinlock_t *__spinlock));
 #if defined(_POSIX_READER_WRITER_LOCKS)
 
 /* This is used to statically initialize a pthread_rwlock_t. Example:
-  
+
     pthread_mutex_t mutex = PTHREAD_RWLOCK_INITIALIZER;
  */
 
