@@ -226,7 +226,7 @@ int	_EXFUN(pthread_attr_setguardsize,
  * compatibility.
  */
 #if __GNU_VISIBLE
-#if defined(__rtems__) 
+#if defined(__rtems__) || defined(__hipperos__) 
 int	_EXFUN(pthread_attr_setaffinity_np,
 	(pthread_attr_t *__attr, size_t __cpusetsize, 
 	const cpu_set_t *__cpuset));
@@ -241,7 +241,7 @@ int	_EXFUN(pthread_getaffinity_np,
 
 int	_EXFUN(pthread_getattr_np,
 	(pthread_t __id, pthread_attr_t *__attr));
-#endif /* defined(__rtems__) */
+#endif /* defined(__rtems__) || defined(__hipperos__) */
 #endif /* __GNU_VISIBLE */
 
 /* Thread Creation, P1003.1c/Draft 10, p. 144 */
