@@ -26,6 +26,7 @@
 #if defined(_POSIX_THREADS)
 
 #include <sys/cpuset.h>
+#include <sys/features.h>
 
 /*
  *  2.5 Primitive System Data Types,  P1003.1c/D10, p. 19.
@@ -39,7 +40,10 @@
 typedef __uint32_t pthread_t;
 
 typedef struct {
+    /** Detach state (whether the thread is detached or joinable). */
     int detachstate;
+
+    /** Core affinity of the thread. */
     cpu_set_t affinity;
 } pthread_attr_t;
 
@@ -87,19 +91,24 @@ typedef struct {
  * results in undefined behavior. An implementation may map this mutex to
  * one of the other mutex types.
  */
-#define PTHREAD_MUTEX_DEFAULT 3
+#define PTHREAD_MUTEX_DEFAULT PTHREAD_MUTEX_NORMAL
 
 #endif /* !defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
-#if defined(__XMK__)
-typedef unsigned int pthread_mutex_t; /* identify a mutex */
+/** Definition of the sem_t type for HIPPEROS. */
+typedef uintptr_t __sem_t;
 
+/** Mutex identifier. */
 typedef struct {
+    /** Underlying semaphore. */
+    __sem_t sem;
+    int is_initialized;
     int type;
-} pthread_mutexattr_t;
-
-#else /* !defined(__XMK__) */
-typedef __uint32_t pthread_mutex_t; /* identify a mutex */
+    #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+    pthread_t owner;
+    size_t lock_count;
+    #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
+} pthread_mutex_t;
 
 typedef struct {
     int is_initialized;
@@ -115,9 +124,35 @@ typedef struct {
 #endif
     int recursive;
 } pthread_mutexattr_t;
-#endif /* !defined(__XMK__) */
 
-#define _PTHREAD_MUTEX_INITIALIZER ((pthread_mutex_t) 0xFFFFFFFF)
+#if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+#define _PTHREAD_MUTEX_INITIALIZER     \
+    ((pthread_mutex_t){                \
+        .type = PTHREAD_MUTEX_DEFAULT, \
+        .is_initialized = 1,           \
+        .owner = 0xFFFFFFFFu,          \
+        .lock_count = 0u,              \
+    })
+#else
+#define _PTHREAD_MUTEX_INITIALIZER     \
+    ((pthread_mutex_t){                \
+        .type = PTHREAD_MUTEX_DEFAULT, \
+        .is_initialized = 1,           \
+    })
+#endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
+
+#if defined(_POSIX_THREAD_PROCESS_SHARED)
+/* NOTE: P1003.1c/D10, p. 81 defines following values for process_shared. */
+
+/** The mutex is only visible within the creating process. */
+#define PTHREAD_PROCESS_PRIVATE 0
+
+/**
+ * The mutex is visible to all processes with access to the memory where
+ * the resource is located.
+ */
+#define PTHREAD_PROCESS_SHARED 1
+#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
 
 /* Condition Variables */
 

@@ -373,6 +373,8 @@ extern "C" {
 
 #ifdef __hipperos__
 #define _POSIX_THREADS 1
+#define _POSIX_THREAD_PROCESS_SHARED 1
+#define _UNIX98_THREAD_MUTEX_ATTRIBUTES 1
 #endif
 
 /* XMK loosely adheres to POSIX -- 1003.1 */
