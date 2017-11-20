@@ -102,27 +102,36 @@ typedef uintptr_t __sem_t;
 typedef struct {
     /** Underlying semaphore. */
     __sem_t sem;
-    int is_initialized;
-    int type;
-    #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+#if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+    /** Thread identifier of the owner of the mutex. */
     pthread_t owner;
+
+    /** Number of times this mutex was locked (if recursive). */
     size_t lock_count;
-    #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
+#endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
+
+    /** Whether the mutex is initialized. */
+    int is_initialized;
+
+    /** Mutex type. */
+    int type;
 } pthread_mutex_t;
 
 typedef struct {
+    /** Whether the mutex attributes structure is initialized. */
     int is_initialized;
 #if defined(_POSIX_THREAD_PROCESS_SHARED)
-    int process_shared; /* allow mutex to be shared amongst processes */
-#endif
+    /** Whether the mutex can be shared amongst processes. */
+    int process_shared;
+#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
 #if defined(_POSIX_THREAD_PRIO_PROTECT)
     int prio_ceiling;
     int protocol;
-#endif
+#endif /* defined(_POSIX_THREAD_PRIO_PROTECT) */
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+    /** Mutex type. */
     int type;
-#endif
-    int recursive;
+#endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 } pthread_mutexattr_t;
 
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
