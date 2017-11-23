@@ -380,7 +380,13 @@ extern "C" {
 
 /** Enables mutex types */
 #define _UNIX98_THREAD_MUTEX_ATTRIBUTES 1
-#endif
+
+/**
+ * Enables timeout variants of standard functions such as
+ * pthread_mutex_timedlock.
+ */
+#define _POSIX_TIMEOUTS	1
+#endif /* __hipperos__ */
 
 /* XMK loosely adheres to POSIX -- 1003.1 */
 #ifdef __XMK__
