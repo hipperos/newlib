@@ -372,8 +372,21 @@ extern "C" {
 #endif
 
 #ifdef __hipperos__
+/** Enables the pthread API */
 #define _POSIX_THREADS 1
-#endif
+
+/** Enables process sharing mutex flags */
+#define _POSIX_THREAD_PROCESS_SHARED 1
+
+/** Enables mutex types */
+#define _UNIX98_THREAD_MUTEX_ATTRIBUTES 1
+
+/**
+ * Enables timeout variants of standard functions such as
+ * pthread_mutex_timedlock.
+ */
+#define _POSIX_TIMEOUTS	1
+#endif /* __hipperos__ */
 
 /* XMK loosely adheres to POSIX -- 1003.1 */
 #ifdef __XMK__
