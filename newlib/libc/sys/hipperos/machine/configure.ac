@@ -13,8 +13,8 @@ NEWLIB_CONFIGURE(../../../..)
 
 if test -n "${machine_dir}"; then
   case ${machine_dir} in
-	aarch64) AC_CONFIG_SUBDIRS(aarch64) ;;
-	arm) AC_CONFIG_SUBDIRS(arm) ;;
+	aarch64) AC_CONFIG_SUBDIRS([aarch64]) ;;
+	arm) AC_CONFIG_SUBDIRS([arm]) ;;
   esac;
 fi
 

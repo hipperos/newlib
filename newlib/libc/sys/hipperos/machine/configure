@@ -561,12 +561,14 @@ PACKAGE_STRING='newlib 2.5.0'
 PACKAGE_BUGREPORT=''
 PACKAGE_URL=''
 
-ac_unique_file="crt0.c"
+ac_unique_file="aarch64"
+ac_unique_file="arm"
 enable_option_checking=no
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+HAVE_MACHINE_DIR_FALSE
+HAVE_MACHINE_DIR_TRUE
 subdirs
-HIPPEROS_MACH_LIB
 sys_dir
 machine_dir
 libm_machine_dir
@@ -700,7 +702,8 @@ host_alias
 target_alias
 CCAS
 CCASFLAGS'
-ac_subdirs_all='machine'
+ac_subdirs_all='aarch64
+arm'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -1811,8 +1814,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+
 ac_aux_dir=
-for ac_dir in ../../../.. "$srcdir"/../../../..; do
+for ac_dir in ../../../../.. "$srcdir"/../../../../..; do
   if test -f "$ac_dir/install-sh"; then
     ac_aux_dir=$ac_dir
     ac_install_sh="$ac_aux_dir/install-sh -c"
@@ -1828,7 +1832,7 @@ for ac_dir in ../../../.. "$srcdir"/../../../..; do
   fi
 done
 if test -z "$ac_aux_dir"; then
-  as_fn_error $? "cannot find install-sh, install.sh, or shtool in ../../../.. \"$srcdir\"/../../../.." "$LINENO" 5
+  as_fn_error $? "cannot find install-sh, install.sh, or shtool in ../../../../.. \"$srcdir\"/../../../../.." "$LINENO" 5
 fi
 
 # These three variables are undocumented and unsupported,
@@ -2509,12 +2513,12 @@ test -z "${with_target_subdir}" && with_target_subdir=.
 
 if test "${srcdir}" = "."; then
   if test "${with_target_subdir}" != "."; then
-    newlib_basedir="${srcdir}/${with_multisrctop}../../../.."
+    newlib_basedir="${srcdir}/${with_multisrctop}../../../../.."
   else
-    newlib_basedir="${srcdir}/${with_multisrctop}../../.."
+    newlib_basedir="${srcdir}/${with_multisrctop}../../../.."
   fi
 else
-  newlib_basedir="${srcdir}/../../.."
+  newlib_basedir="${srcdir}/../../../.."
 fi
 
 
@@ -3431,12 +3435,24 @@ OBJEXT=${oext}
 
 
 
-HIPPEROS_MACH_LIB=machine/lib.${aext}
+if test -n "${machine_dir}"; then
+  case ${machine_dir} in
+	aarch64)
 
+subdirs="$subdirs aarch64"
+ ;;
+	arm) subdirs="$subdirs arm"
+ ;;
+  esac;
+fi
 
-
-
-subdirs="$subdirs machine"
+ if test x${machine_dir} != x; then
+  HAVE_MACHINE_DIR_TRUE=
+  HAVE_MACHINE_DIR_FALSE='#'
+else
+  HAVE_MACHINE_DIR_TRUE='#'
+  HAVE_MACHINE_DIR_FALSE=
+fi
 
 
 ac_config_files="$ac_config_files Makefile"
@@ -3633,6 +3649,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${USE_LIBTOOL_TRUE}" && test -z "${USE_LIBTOOL_FALSE}"; then
   as_fn_error $? "conditional \"USE_LIBTOOL\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_MACHINE_DIR_TRUE}" && test -z "${HAVE_MACHINE_DIR_FALSE}"; then
+  as_fn_error $? "conditional \"HAVE_MACHINE_DIR\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
