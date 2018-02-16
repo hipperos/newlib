@@ -1,8 +1,8 @@
 _exit:
-    /* Store the syscall ID in r7 */
-    mov r7, #0
+    /* Store the syscall ID (0) in r4 */
+    li %r4, 0
     /* Do the supervisor call */
-    svc #0
+    sc
 loop:
     /* Infinite loop */
     b loop
