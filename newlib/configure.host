@@ -382,8 +382,15 @@ case "${host}" in
 	xdr_dir=xdr
 	;;
   *-*-hipperos*)
-    sys_dir=hipperos
-    ;;
+	sys_dir=hipperos
+	case "${host}" in
+	  arm*-*-*)
+	    if [ "x${newlib_may_supply_syscalls}" = "xno" ] ; then
+	      have_crt0="no"
+	    fi
+	  *) ;;
+	esac
+	;;
   *-*-netware*)
 	signal_dir=
 	sys_dir=netware
