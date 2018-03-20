@@ -388,6 +388,7 @@ case "${host}" in
 	    if [ "x${newlib_may_supply_syscalls}" = "xno" ] ; then
 	      have_crt0="no"
 	    fi
+	    ;;
 	  *) ;;
 	esac
 	;;
