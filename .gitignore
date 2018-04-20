@@ -42,3 +42,6 @@ core
 !core/
 
 lost+found
+
+# IDE metadata
+.idea/

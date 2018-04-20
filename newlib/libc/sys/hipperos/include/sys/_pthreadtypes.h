@@ -25,6 +25,7 @@
 
 #if defined(_POSIX_THREADS)
 
+#include <sys/sched.h>
 #include <sys/cpuset.h>
 #include <sys/features.h>
 
@@ -40,12 +41,25 @@
 typedef __uint32_t pthread_t;
 
 typedef struct {
+    /** Whether this thread is scheduled at the system or process scope. */
+    int contentionscope;
+
+    /** POSIX scheduler identifier (SCHED_FIFO etc.)*/
+    int schedpolicy;
+
+    /** Scheduler parameters (i.e. priority) */
+    struct sched_param schedparam;
+
     /** Detach state (whether the thread is detached or joinable). */
     int detachstate;
 
     /** Core affinity of the thread. */
     cpu_set_t affinity;
 } pthread_attr_t;
+
+/* P1003.1c/D10, p. 118-119 */
+#define PTHREAD_SCOPE_PROCESS 0
+#define PTHREAD_SCOPE_SYSTEM  1
 
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 
