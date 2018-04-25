@@ -109,13 +109,10 @@ typedef struct {
 
 #endif /* !defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
-/** Definition of the sem_t type for HIPPEROS. */
-typedef uintptr_t __sem_t;
-
 /** Mutex identifier. */
 typedef struct {
-    /** Underlying semaphore. */
-    __sem_t sem;
+    /** Pointer to the underlying futex. */
+    uint32_t* futex_ptr;
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
     /** Thread identifier of the owner of the mutex. */
     pthread_t owner;
@@ -148,19 +145,24 @@ typedef struct {
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 } pthread_mutexattr_t;
 
+/*
+ * PTHREAD_MUTEX_INITIALIZER is not supported for the moment.
+ */
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 #define _PTHREAD_MUTEX_INITIALIZER     \
     ((pthread_mutex_t){                \
+        .futex_ptr = NULL,             \
         .type = PTHREAD_MUTEX_DEFAULT, \
-        .is_initialized = 1,           \
+        .is_initialized = 0,           \
         .owner = 0xFFFFFFFFu,          \
         .lock_count = 0u,              \
     })
 #else
 #define _PTHREAD_MUTEX_INITIALIZER     \
     ((pthread_mutex_t){                \
+        .futex_ptr = NULL,             \
         .type = PTHREAD_MUTEX_DEFAULT, \
-        .is_initialized = 1,           \
+        .is_initialized = 0,           \
     })
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
