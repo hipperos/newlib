@@ -188,17 +188,48 @@ typedef struct {
 
 /* Condition Variables */
 
-typedef __uint32_t pthread_cond_t; /* identify a condition variable */
-
-#define _PTHREAD_COND_INITIALIZER ((pthread_cond_t) 0xFFFFFFFF)
-
+/** Conditional variable identifier. */
 typedef struct {
+    /** Pointer to the underlying futex. */
+    uint32_t* futex_ptr;
+
+    /** Pointer to the mutex associated to the conditional variable. */
+    pthread_mutex_t* mutex_ptr;
+
+    /** Clock used to compute the timeout. */
+    clock_t clock;
+
+    /** Whether the conditional variable is initialized. */
     int is_initialized;
-    clock_t clock; /* specifiy clock for timeouts */
+
 #if defined(_POSIX_THREAD_PROCESS_SHARED)
-    int process_shared; /* allow this to be shared amongst processes */
+    /** Whether the conditional variable can be shared amongst processes. */
+    int process_shared;
+#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
+} pthread_cond_t;
+
+/* PTHREAD_COND_INITIALIZER is not supported for the moment. */
+#define _PTHREAD_COND_INITIALIZER                                              \
+  ((pthread_cond_t){                                                           \
+      .futex_ptr = NULL,                                                       \
+      .mutex_ptr = NULL,                                                       \
+      .clock = CLOCK_REALTIME,                                                 \
+      .is_initialized = 0,                                                     \
+  })
+
+/**
+ * Conditional variable attributes structure.
+ */
+typedef struct {
+    /** Whether the conditional variable attributes structure is initialized. */
+    int is_initialized;
+    /** Clock used to compute the timeout. */
+    clock_t clock;
+#if defined(_POSIX_THREAD_PROCESS_SHARED)
+/** Whether the conditional variable can be shared amongst processes. */
+    int process_shared;
 #endif
-} pthread_condattr_t; /* a condition attribute object */
+} pthread_condattr_t;
 
 /* Keys */
 
