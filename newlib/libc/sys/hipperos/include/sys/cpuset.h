@@ -5,6 +5,9 @@
  * up to 31.
  */
 
+#ifndef _SYS_CPUSET_H_
+#define _SYS_CPUSET_H_
+
 #include <stdint.h>
 
 typedef struct {
@@ -61,3 +64,5 @@ static int CPU_EQUAL(const cpu_set_t* set1, const cpu_set_t* set2)
 {
     return set1->__bits == set2->__bits;
 }
+
+#endif /* _SYS_CPUSET_H_ */
