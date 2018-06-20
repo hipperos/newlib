@@ -44,7 +44,7 @@
 /**
  * Does not allocate memory but maps the provided physical address.
  *
- * @note HIPPEROS Extension
+ * @note HIPPEROS Extension.
  */
 #define MAP_FIXED_PADDR (1 << 3)
 
@@ -56,7 +56,7 @@
 #define MAP_DMA (1 << 4)
 
 /**
- * Sets when the cacheability is provided.
+ * Cacheability is provided.
  *
  * This is required to distinguish the lack of cacheability specification and
  * the policy of ID 0.
@@ -66,7 +66,7 @@
 /**
  * Cacheability.
  *
- * @note HIPPEROS Extension
+ * @note HIPPEROS Extension.
  */
 #define MAP_CACHEABILITY(x) (_MAP_CACHEABILITY_PROVIDED | (((x) & 0x7F) << 9))
 
@@ -121,9 +121,9 @@
  * @param[in]   flags
  *              Attributes regarding the operation.
  * @param[in]   fildes
- *              Unused.
+ *              Unused (must be set to -1).
  * @param[in]   off
- *              Unused.
+ *              Unused (must be set to 0).
  *
  * @returns The virtual address where the region has been mapped.
  */
