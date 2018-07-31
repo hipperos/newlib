@@ -381,6 +381,10 @@ extern "C" {
 /* Enable the definition of POSIX thread scheduling functions */
 #define _POSIX_THREAD_PRIORITY_SCHEDULING 1
 
+/* Priority inheriting mutexes */
+#define _POSIX_THREAD_PRIO_INHERIT 1
+#define _POSIX_THREAD_PRIO_PROTECT 1
+
 /** Enables mutex types */
 #define _UNIX98_THREAD_MUTEX_ATTRIBUTES 1
 
