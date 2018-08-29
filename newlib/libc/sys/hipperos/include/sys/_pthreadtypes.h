@@ -57,6 +57,13 @@ typedef struct {
     cpu_set_t affinity;
 } pthread_attr_t;
 
+/* Mutexes */
+
+/* Values for blocking protocol. */
+#define PTHREAD_PRIO_NONE    0
+#define PTHREAD_PRIO_INHERIT 1
+#define PTHREAD_PRIO_PROTECT 2
+
 /* P1003.1c/D10, p. 118-119 */
 #define PTHREAD_SCOPE_PROCESS 0
 #define PTHREAD_SCOPE_SYSTEM  1
