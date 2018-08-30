@@ -372,6 +372,9 @@ extern "C" {
 #endif
 
 #ifdef __hipperos__
+/** Enables POSIX timers. Required for nanosleep. */
+#define _POSIX_TIMERS 1
+
 /** Enables the pthread API */
 #define _POSIX_THREADS 1
 
