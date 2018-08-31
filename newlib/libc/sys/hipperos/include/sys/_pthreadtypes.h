@@ -179,7 +179,7 @@ typedef struct {
         .is_initialized = 0,                     \
         .owner = 0xFFFFFFFFu,                    \
         .lock_count = 0u,                        \
-    })
+    aaaaaaaaaaaaaaaaaaaaa})
 #else
 #define _PTHREAD_MUTEX_INITIALIZER               \
     ((pthread_mutex_t){                          \
