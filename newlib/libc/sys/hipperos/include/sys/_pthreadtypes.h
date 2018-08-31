@@ -176,7 +176,7 @@ typedef struct {
         .futex_u = _EMBED_FUTEX_INITIALIZER,     \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
-        .is_initialized = 0,                     \
+        .is_initialized = 1,                     \
         .owner = 0xFFFFFFFFu,                    \
         .lock_count = 0u,                        \
     })
@@ -186,7 +186,7 @@ typedef struct {
         .futex_u = _EMBED_FUTEX_INITIALIZER,     \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
-        .is_initialized = 0,                     \
+        .is_initialized = 1,                     \
     })
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
