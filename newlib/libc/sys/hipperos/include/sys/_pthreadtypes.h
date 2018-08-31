@@ -173,17 +173,17 @@ typedef struct {
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 #define _PTHREAD_MUTEX_INITIALIZER               \
     ((pthread_mutex_t){                          \
-        .futex_union = _EMBED_FUTEX_INITIALIZER, \
+        .futex_u = _EMBED_FUTEX_INITIALIZER,     \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
         .is_initialized = 0,                     \
         .owner = 0xFFFFFFFFu,                    \
         .lock_count = 0u,                        \
-    aaaaaaaaaaaaaaaaaaaaa})
+    })
 #else
 #define _PTHREAD_MUTEX_INITIALIZER               \
     ((pthread_mutex_t){                          \
-        .futex_union = _EMBED_FUTEX_INITIALIZER, \
+        .futex_u = _EMBED_FUTEX_INITIALIZER,     \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
         .is_initialized = 0,                     \
