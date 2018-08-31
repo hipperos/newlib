@@ -118,8 +118,18 @@ typedef struct {
 
 /** Mutex identifier. */
 typedef struct {
-    /** Pointer to the underlying futex. */
+    /** Futex pointer for process-shared mutexes. */
     uint32_t* futex_ptr;
+
+    /** Hard futex for process-private (i.e. static) mutexes. */
+    uint32_t hard_futex;
+
+    /**
+     * @brief Thread identifier of the first thread waiting on this mutex.
+     *
+     * Only for process-private mutexes.
+     */
+    pthread_t waiting;
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
     /** Thread identifier of the owner of the mutex. */
     pthread_t owner;
@@ -133,6 +143,9 @@ typedef struct {
 
     /** Mutex type. */
     int type;
+
+    /** PSHARED attribute. */
+    int pshared;
 } pthread_mutex_t;
 
 typedef struct {
@@ -152,24 +165,31 @@ typedef struct {
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 } pthread_mutexattr_t;
 
+
 /*
- * PTHREAD_MUTEX_INITIALIZER is not supported for the moment.
+ * Static initializer for mutexes.
  */
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
-#define _PTHREAD_MUTEX_INITIALIZER     \
-    ((pthread_mutex_t){                \
-        .futex_ptr = NULL,             \
-        .type = PTHREAD_MUTEX_DEFAULT, \
-        .is_initialized = 0,           \
-        .owner = 0xFFFFFFFFu,          \
-        .lock_count = 0u,              \
+#define _PTHREAD_MUTEX_INITIALIZER               \
+    ((pthread_mutex_t) {                         \
+        .futex_ptr = NULL,                       \
+        .hard_futex = 0u,                        \
+        .waiting = 0u,                           \
+        .type = PTHREAD_MUTEX_DEFAULT,           \
+        .pshared = PTHREAD_PROCESS_PRIVATE,      \
+        .is_initialized = 1,                     \
+        .owner = 0xFFFFFFFFu,                    \
+        .lock_count = 0u,                        \
     })
 #else
-#define _PTHREAD_MUTEX_INITIALIZER     \
-    ((pthread_mutex_t){                \
-        .futex_ptr = NULL,             \
-        .type = PTHREAD_MUTEX_DEFAULT, \
-        .is_initialized = 0,           \
+#define _PTHREAD_MUTEX_INITIALIZER               \
+    ((pthread_mutex_t) {                         \
+        .futex_ptr = NULL,                       \
+        .hard_futex = 0u,                        \
+        .waiting = 0u,
+        .type = PTHREAD_MUTEX_DEFAULT,           \
+        .pshared = PTHREAD_PROCESS_PRIVATE,      \
+        .is_initialized = 1,                     \
     })
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
