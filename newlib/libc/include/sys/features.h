@@ -397,7 +397,7 @@ extern "C" {
 #define _POSIX_TIMEOUTS	1
 
 /** Enables POSIX thread barriers. */
-#define _POSIX_BARRIERS 200112L
+#define _POSIX_BARRIERS 200809L
 #endif /* __hipperos__ */
 
 /* XMK loosely adheres to POSIX -- 1003.1 */
