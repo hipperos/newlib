@@ -172,7 +172,7 @@ typedef struct {
  * Static initializer for mutexes.
  */
 #define _EMBED_FUTEX_INITIALIZER \
-    ((EmbedFutex_u) {.futex = {.value = 0u, .waiting = 0xFFFFFFFFu}})
+    ((EmbedFutex_u) {.futex = {.value = 0u, .waiting = 0u}})
 
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 #define _PTHREAD_MUTEX_INITIALIZER               \
