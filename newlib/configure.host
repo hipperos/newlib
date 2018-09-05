@@ -587,7 +587,7 @@ case "${host}" in
 	syscall_dir=syscalls
 	;;
   *-*-hipperos*)
-    newlib_cflags="${newlib_cflags} -D__hipperos__ -D__DYNAMIC_REENT__ -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED"
+    newlib_cflags="${newlib_cflags} -D__DYNAMIC_REENT__ -DMALLOC_PROVIDED -DREENTRANT_SYSCALLS_PROVIDED -DHAVE_NANOSLEEP"
     syscall_dir=syscalls
     ;;
   *-*-phoenix*)
