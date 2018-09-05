@@ -218,7 +218,29 @@ typedef struct {
 /* POSIX Barrier Types */
 
 #if defined(_POSIX_BARRIERS)
-typedef __uint32_t pthread_barrier_t; /* POSIX Barrier Object */
+/**
+ * POSIX Barrier Object.
+ */
+typedef struct {
+    /** Lock for internal data structure. */
+    pthread_mutex_t mutex;
+
+    /** Pointer to the underlying futex. */
+    uint32_t* futex_ptr;
+
+    /** Number of threads the barrier is configured for. */
+    unsigned thread_count;
+
+    /** Number of threads still needed to lift the barrier. */
+    unsigned nb_left;
+
+    /** Whether the barrier is initialized. */
+    int is_initialized;
+} pthread_barrier_t;
+
+/**
+ * POSIX Barrier Attributes.
+ */
 typedef struct {
     int is_initialized; /* is this structure initialized? */
 #if defined(_POSIX_THREAD_PROCESS_SHARED)
