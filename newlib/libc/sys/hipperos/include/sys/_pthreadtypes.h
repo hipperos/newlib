@@ -121,7 +121,10 @@ typedef union {
     /** Futex pointer for process-shared mutexes. */
     uint32_t* futex_ptr;
     /** Hard futex for process-private (i.e. static) mutexes. */
-    uint32_t futex;
+    struct futex {
+        uint32_t value;
+        pthread_t waiting;
+    };
 } EmbedFutex_u;
 
 /** Mutex identifier. */
@@ -168,11 +171,12 @@ typedef struct {
 /*
  * Static initializer for mutexes.
  */
-#define _EMBED_FUTEX_INITIALIZER ((EmbedFutex_u) {.futex = 0u})
+#define _EMBED_FUTEX_INITIALIZER \
+    ((EmbedFutex_u) {.futex = {.value = 0u, .waiting = 0xFFFFFFFFu}})
 
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 #define _PTHREAD_MUTEX_INITIALIZER               \
-    ((pthread_mutex_t){                          \
+    ((pthread_mutex_t) {                         \
         .futex_u = _EMBED_FUTEX_INITIALIZER,     \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
@@ -182,7 +186,7 @@ typedef struct {
     })
 #else
 #define _PTHREAD_MUTEX_INITIALIZER               \
-    ((pthread_mutex_t){                          \
+    ((pthread_mutex_t) {                         \
         .futex_u = _EMBED_FUTEX_INITIALIZER,     \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
