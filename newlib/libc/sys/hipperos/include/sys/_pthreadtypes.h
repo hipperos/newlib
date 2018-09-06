@@ -116,22 +116,20 @@ typedef struct {
 
 #endif /* !defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
-/** Hard futex or futex pointer as part of a mutex. */
-typedef union {
-    /** Futex pointer for process-shared mutexes. */
-    uint32_t* futex_ptr;
-    /** Hard futex for process-private (i.e. static) mutexes. */
-    struct hard_futex_s {
-        uint32_t value;
-        pthread_t waiting;
-    } futex;
-} EmbedFutex_u;
-
 /** Mutex identifier. */
 typedef struct {
-    /** Underlying futex. */
-    EmbedFutex_u futex_u;
+    /** Futex pointer for process-shared mutexes. */
+    uint32_t* futex_ptr;
 
+    /** Hard futex for process-private (i.e. static) mutexes. */
+    uint32_t hard_futex;
+
+    /**
+     * @brief Thread identifier of the first thread waiting on this mutex.
+     *
+     * Only for process-private mutexes.
+     */
+    pthread_t waiting;
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
     /** Thread identifier of the owner of the mutex. */
     pthread_t owner;
@@ -171,15 +169,12 @@ typedef struct {
 /*
  * Static initializer for mutexes.
  */
-#define _EMBED_FUTEX_INITIALIZER \
-    ((EmbedFutex_u) {.futex = ((struct hard_futex_s) {.value = 0u,
-                                                      .waiting = 0u,
-                                                      })})
-
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 #define _PTHREAD_MUTEX_INITIALIZER               \
     ((pthread_mutex_t) {                         \
-        .futex_u = _EMBED_FUTEX_INITIALIZER,     \
+        .futex_ptr = NULL,                       \
+        .hard_futex = 0u,                        \
+        .waiting = 0u,                           \
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
         .is_initialized = 1,                     \
@@ -189,7 +184,9 @@ typedef struct {
 #else
 #define _PTHREAD_MUTEX_INITIALIZER               \
     ((pthread_mutex_t) {                         \
-        .futex_u = _EMBED_FUTEX_INITIALIZER,     \
+        .futex_ptr = NULL,                       \
+        .hard_futex = 0u,                        \
+        .waiting = 0u,
         .type = PTHREAD_MUTEX_DEFAULT,           \
         .pshared = PTHREAD_PROCESS_PRIVATE,      \
         .is_initialized = 1,                     \
