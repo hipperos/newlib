@@ -121,10 +121,10 @@ typedef union {
     /** Futex pointer for process-shared mutexes. */
     uint32_t* futex_ptr;
     /** Hard futex for process-private (i.e. static) mutexes. */
-    struct futex {
+    struct {
         uint32_t value;
         pthread_t waiting;
-    };
+    } futex;
 } EmbedFutex_u;
 
 /** Mutex identifier. */
