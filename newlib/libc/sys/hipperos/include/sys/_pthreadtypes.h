@@ -116,6 +116,19 @@ typedef struct {
 
 #endif /* !defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
+#if defined(_POSIX_THREAD_PROCESS_SHARED)
+/* NOTE: P1003.1c/D10, p. 81 defines following values for process_shared. */
+
+/** The mutex is only visible within the creating process. */
+#define PTHREAD_PROCESS_PRIVATE 0
+
+/**
+ * The mutex is visible to all processes with access to the memory where
+ * the resource is located.
+ */
+#define PTHREAD_PROCESS_SHARED 1
+#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
+
 /** Mutex identifier. */
 typedef struct {
     /** Futex pointer for process-shared mutexes. */
@@ -138,17 +151,17 @@ typedef struct {
     /** Mutex type. */
     int type;
 
-    /** PSHARED attribute. */
-    int pshared;
+    /** Whether the mutex can be shared amongst processes. */
+    int process_shared;
 } pthread_mutex_t;
 
 typedef struct {
     /** Whether the mutex attributes structure is initialized. */
     int is_initialized;
-#if defined(_POSIX_THREAD_PROCESS_SHARED)
+
     /** Whether the mutex can be shared amongst processes. */
     int process_shared;
-#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
+
 #if defined(_POSIX_THREAD_PRIO_PROTECT)
     int prio_ceiling;
     int protocol;
@@ -159,44 +172,30 @@ typedef struct {
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 } pthread_mutexattr_t;
 
-
 /*
  * Static initializer for mutexes.
  */
 #if defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES)
-#define _PTHREAD_MUTEX_INITIALIZER               \
-    ((pthread_mutex_t) {                         \
-        .futex_ptr = NULL,                       \
-        .hard_futex = 0u,                        \
-        .type = PTHREAD_MUTEX_DEFAULT,           \
-        .pshared = PTHREAD_PROCESS_PRIVATE,      \
-        .is_initialized = 1,                     \
-        .owner = 0xFFFFFFFFu,                    \
-        .lock_count = 0u,                        \
+#define _PTHREAD_MUTEX_INITIALIZER                      \
+    ((pthread_mutex_t) {                                \
+        .futex_ptr = NULL,                              \
+        .hard_futex = 0u,                               \
+        .type = PTHREAD_MUTEX_DEFAULT,                  \
+        .process_shared = PTHREAD_PROCESS_PRIVATE,      \
+        .is_initialized = 1,                            \
+        .owner = 0xFFFFFFFFu,                           \
+        .lock_count = 0u,                               \
     })
 #else
-#define _PTHREAD_MUTEX_INITIALIZER               \
-    ((pthread_mutex_t) {                         \
-        .futex_ptr = NULL,                       \
-        .hard_futex = 0u,                        \
-        .type = PTHREAD_MUTEX_DEFAULT,           \
-        .pshared = PTHREAD_PROCESS_PRIVATE,      \
-        .is_initialized = 1,                     \
+#define _PTHREAD_MUTEX_INITIALIZER                      \
+    ((pthread_mutex_t) {                                \
+        .futex_ptr = NULL,                              \
+        .hard_futex = 0u,                               \
+        .type = PTHREAD_MUTEX_DEFAULT,                  \
+        .process_shared = PTHREAD_PROCESS_PRIVATE,      \
+        .is_initialized = 1,                            \
     })
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
-
-#if defined(_POSIX_THREAD_PROCESS_SHARED)
-/* NOTE: P1003.1c/D10, p. 81 defines following values for process_shared. */
-
-/** The mutex is only visible within the creating process. */
-#define PTHREAD_PROCESS_PRIVATE 0
-
-/**
- * The mutex is visible to all processes with access to the memory where
- * the resource is located.
- */
-#define PTHREAD_PROCESS_SHARED 1
-#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
 
 /* Condition Variables */
 
@@ -204,6 +203,9 @@ typedef struct {
 typedef struct {
     /** Pointer to the underlying futex. */
     uint32_t* futex_ptr;
+
+    /** Hard futex for private conditional variables. */
+    uint32_t hard_futex;
 
     /** Pointer to the mutex associated to the conditional variable. */
     pthread_mutex_t* mutex_ptr;
@@ -214,19 +216,19 @@ typedef struct {
     /** Whether the conditional variable is initialized. */
     int is_initialized;
 
-#if defined(_POSIX_THREAD_PROCESS_SHARED)
     /** Whether the conditional variable can be shared amongst processes. */
     int process_shared;
-#endif /* defined(_POSIX_THREAD_PROCESS_SHARED) */
 } pthread_cond_t;
 
-/* PTHREAD_COND_INITIALIZER is not supported for the moment. */
+/* Static initializer for conditional variables. */
 #define _PTHREAD_COND_INITIALIZER                                              \
   ((pthread_cond_t){                                                           \
       .futex_ptr = NULL,                                                       \
+      .hard_futex = 0u,                                                        \
       .mutex_ptr = NULL,                                                       \
       .clock = CLOCK_REALTIME,                                                 \
-      .is_initialized = 0,                                                     \
+      .is_initialized = 1,                                                     \
+      .process_shared = PTHREAD_PROCESS_PRIVATE,                               \
   })
 
 /**
