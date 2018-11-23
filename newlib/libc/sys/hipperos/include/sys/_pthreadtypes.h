@@ -180,20 +180,20 @@ typedef struct {
     ((pthread_mutex_t) {                                \
         .futex_ptr = NULL,                              \
         .hard_futex = 0u,                               \
-        .type = PTHREAD_MUTEX_DEFAULT,                  \
-        .process_shared = PTHREAD_PROCESS_PRIVATE,      \
-        .is_initialized = 1,                            \
         .owner = 0xFFFFFFFFu,                           \
         .lock_count = 0u,                               \
+        .is_initialized = 1,                            \
+        .type = PTHREAD_MUTEX_DEFAULT,                  \
+        .process_shared = PTHREAD_PROCESS_PRIVATE,      \
     })
 #else
 #define _PTHREAD_MUTEX_INITIALIZER                      \
     ((pthread_mutex_t) {                                \
         .futex_ptr = NULL,                              \
         .hard_futex = 0u,                               \
+        .is_initialized = 1,                            \
         .type = PTHREAD_MUTEX_DEFAULT,                  \
         .process_shared = PTHREAD_PROCESS_PRIVATE,      \
-        .is_initialized = 1,                            \
     })
 #endif /* defined(_UNIX98_THREAD_MUTEX_ATTRIBUTES) */
 
