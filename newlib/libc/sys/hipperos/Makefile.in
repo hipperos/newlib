@@ -67,7 +67,7 @@ CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 lib_a_AR = $(AR) $(ARFLAGS)
-am_lib_a_OBJECTS = lib_a-crt0.$(OBJEXT) lib_a-getreent.$(OBJEXT)
+am_lib_a_OBJECTS = lib_a-getreent.$(OBJEXT)
 lib_a_OBJECTS = $(am_lib_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp =
@@ -180,6 +180,7 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
+runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -194,7 +195,7 @@ INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 AM_CCASFLAGS = $(INCLUDES)
 noinst_LIBRARIES = lib.a
 hipperos_objs = getreent.o
-lib_a_SOURCES = crt0.c getreent.c
+lib_a_SOURCES = getreent.c
 lib_a_LIBADD = $(hipperos_objs)
 lib_a_DEPENDENCIES = $(hipperos_objs)
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
@@ -258,12 +259,6 @@ distclean-compile:
 
 .c.obj:
 	$(COMPILE) -c `$(CYGPATH_W) '$<'`
-
-lib_a-crt0.o: crt0.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-crt0.o `test -f 'crt0.c' || echo '$(srcdir)/'`crt0.c
-
-lib_a-crt0.obj: crt0.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-crt0.obj `if test -f 'crt0.c'; then $(CYGPATH_W) 'crt0.c'; else $(CYGPATH_W) '$(srcdir)/crt0.c'; fi`
 
 lib_a-getreent.o: getreent.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getreent.o `test -f 'getreent.c' || echo '$(srcdir)/'`getreent.c
@@ -348,7 +343,7 @@ distclean-tags:
 	-rm -f cscope.out cscope.in.out cscope.po.out cscope.files
 check-am:
 check: check-am
-all-am: Makefile $(LIBRARIES)
+all-am: Makefile $(LIBRARIES) all-local
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -452,8 +447,8 @@ uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-cscope clean-generic clean-noinstLIBRARIES cscope \
+.PHONY: CTAGS GTAGS all all-am all-local am--refresh check check-am \
+	clean clean-cscope clean-generic clean-noinstLIBRARIES cscope \
 	cscopelist ctags distclean distclean-compile distclean-generic \
 	distclean-tags dvi dvi-am html html-am info info-am install \
 	install-am install-data install-data-am install-dvi \
@@ -466,7 +461,7 @@ uninstall-am:
 	tags uninstall uninstall-am
 
 
-@MAY_SUPPLY_SYSCALLS_TRUE@all: crt0.o
+all-local: crt0.o
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
