@@ -22,8 +22,6 @@ MAESTRO_STUB(void, free(void* ptr), { })
 MAESTRO_STUB(_PTR, calloc(size_t s1, size_t s2), { return 0; })
 MAESTRO_STUB(int, posix_memalign(void **p, size_t si, size_t s2), { return -1; })
 
-MAESTRO_STUB(void, _arc4random_getentropy_fail(void), { });
-
 /* stubs for functions Maestro provides */
 MAESTRO_STUB(int, clock_gettime(clockid_t clk_id, struct timespec *tp), { return -1; })
 MAESTRO_STUB(int, close (int fd), { return -1; })
