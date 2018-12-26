@@ -15,6 +15,10 @@ void maestro_provides_crt0(void) {}  /* dummy symbol so file always has one */
 ret maestro_stub_##func body; \
 ret func body
 
+struct _reent* hnewlib_getreent(void) {
+    return 0;
+}
+
 /* RTEMS provides some of its own routines including a Malloc family */
 MAESTRO_STUB(void *,malloc(size_t s), { return 0; })
 MAESTRO_STUB(void *,realloc(void* p, size_t s), { return 0; })
