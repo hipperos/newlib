@@ -15,7 +15,10 @@ void maestro_provides_crt0(void) {}  /* dummy symbol so file always has one */
 ret maestro_stub_##func body; \
 ret func body
 
-/* RTEMS provides some of its own routines including a Malloc family */
+/* Maestro specific functions. */
+MAESTRO_STUB(struct _reent*, hnewlib_getreent(void), { return 0; })
+
+/* Maestro provides some of its own routines including a Malloc family */
 MAESTRO_STUB(void *,malloc(size_t s), { return 0; })
 MAESTRO_STUB(void *,realloc(void* p, size_t s), { return 0; })
 MAESTRO_STUB(void, free(void* ptr), { })
@@ -56,6 +59,9 @@ MAESTRO_STUB(_ssize_t, _write_r (struct _reent *r, int fd, const void *buf, size
 
 MAESTRO_STUB(void, _exit(int status), { while(1); })
 
+MAESTRO_STUB(int, _isatty_r(struct _reent* r, int file), { return -1; })
+MAESTRO_STUB(int, _fstat_r(struct _reent* r, int file, struct stat* st), { return -1; })
+
 /* stdlib.h */
 MAESTRO_STUB(_PTR, _realloc_r(struct _reent *r, _PTR p, size_t s), { return 0; })
 MAESTRO_STUB(_PTR, _calloc_r(struct _reent *r, size_t s1, size_t s2), { return 0; })
@@ -66,6 +72,9 @@ MAESTRO_STUB(_VOID, _free_r(struct _reent *r, _PTR *p), { })
 
 MAESTRO_STUB(void*, mmap(void* addr, size_t len, int prot, int flags, int fildes, off_t off), { return (void*) 0; })
 MAESTRO_STUB(int, munmap(void *addr, size_t len), { return -1; })
+
+/* pthread.h */
+MAESTRO_STUB(int, pthread_setcancelstate(int state, int *oldstate), { return -1; })
 
 /* stubs for functions required by libc/stdlib */
 MAESTRO_STUB(void, __assert_func(const char *file, int line, const char *failedexpr), { })
